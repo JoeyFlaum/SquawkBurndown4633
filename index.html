@@ -1,0 +1,110 @@
+<html>
+  
+  <!-- See live at https://codepen.io/paulera/pen/ejGKEr    --modified -->  
+
+  
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+  </head>
+  <body>
+    <div id = "main_container"> 
+    <h1 id = "ideal_burn"></h1>
+    <div id = "chart_wrapper">
+    <div style="width:800px;"><canvas id="Q400"></canvas></div>
+  </div>
+    <script>
+      let idealBurn = document.querySelector("#ideal_burn")
+      idealBurn.innerHTML = "Q400 Snag Burndown"
+  
+      function showBurnDown(elementId, burndownData, scopeChange = [], customerBurn) {
+        var speedCanvas = document.getElementById(elementId);
+  
+        Chart.defaults.global.defaultFontFamily = "Arial";
+        Chart.defaults.global.defaultFontSize = 14;
+  
+        let labelsArray = ["MAR 9","MAR 10","MAR 11","MAR 12","MAR 13","MAR 14","MAR 15","MAR 16","MAR 17","Mar 18","MAR 19","Mar 20","MAR 21","MAR 22"]
+        let lastScopeChangeValue = scopeChange[scopeChange.length-1]
+        let idealPoints = scopeChange.map((dataPoint)=>dataPoint)
+        //map ideal points and last point = 0 
+        for(let i = 1;i<=labelsArray.length-scopeChange.length;i++){
+          if(i===labelsArray.length-scopeChange.length){
+            idealPoints.push(0)
+          }else{
+          idealPoints.push(lastScopeChangeValue - (Math.round(lastScopeChangeValue/(labelsArray.length-scopeChange.length)))*i)
+        }}
+        var squawkData = {
+
+          labels: labelsArray,
+          datasets: [ 
+            {
+              label: "FCC Burn",
+              data: burndownData,
+              fill: false,
+              borderColor: "#EE6868",
+              backgroundColor: "#EE6868",
+              lineTension: 0,
+            },
+            {
+              label: "Ideal",
+              borderColor: "#6C8893",
+              backgroundColor: "#6C8893",
+              lineTension: 0,
+              borderDash: [5, 5],
+              fill: false,
+              data: idealPoints
+            },
+            {
+              label: "Conair Accepted",
+              borderColor: "#0000ff",
+              backgroundColor: "#0000ff",
+              lineTension: 0,
+              fill: false,
+              data: customerBurn
+            },
+          ]
+        };
+   
+        var chartOptions = {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              boxWidth: 80,
+              fontColor: 'BLACK'
+            }
+          },
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      min: 0,
+                      max: 250/*Math.round(burndownData[0] * 1.5)*/
+                  }
+              }]
+          }
+        };
+  
+        var lineChart = new Chart(speedCanvas, {
+          type: 'line',
+          data: squawkData,
+          options: chartOptions
+        });
+  
+      }
+      </script>
+    <script>  
+    showBurnDown (
+      "Q400",
+      [140,163,134,133,148,149,141,126,126,102,86,55,30,19], // burndown data
+      //[197,240,208,176,190] // scope change with totals
+      [197,226,194,162,176], // scope change
+      [172,199,199,199,199,200,193,174,136,132,108,79,44,20],//conair 
+      );
+
+
+    </script>
+    <h1 id = "excel">Schedule and Snag Breakdown</h1>
+  <iframe id = "excel_sheet" width="1600" height="800" frameborder="0" scrolling="no" src="https://flycol.sharepoint.com/sites/ProgramManagementFCCS/_layouts/15/Doc.aspx?sourcedoc={5ea3dfb8-911d-4813-bd09-b4e42d548138}&action=embedview&wdAllowInteractivity=False&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True"></iframe>
+ </div>  
+</body>
+</html>

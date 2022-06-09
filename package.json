@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "chart.js": "^3.7.0"
+  },
+  "name": "burndown",
+  "version": "1.0.0",
+  "description": "burndown",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoeyFlaum/Burndown.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoeyFlaum/Burndown/issues"
+  },
+  "homepage": "https://github.com/JoeyFlaum/Burndown/index.html"
+}
